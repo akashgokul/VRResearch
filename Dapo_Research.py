@@ -1,4 +1,3 @@
-
 import torch
 from PIL import Image
 from torch.utils import data
@@ -12,7 +11,6 @@ from torchvision import transforms, utils
 import time
 from torch import nn, optim
 import torchvision.models as models
-
 
 # **Load Data**
 
@@ -98,7 +96,7 @@ for epoch in range(max_epochs):
 
 
 model_save_name = 'resnet18.pt'
-path = F"/content/gdrive/My Drive/VRResearch/{model_save_name}"
+path = "{model_save_name}"
 torch.save(model.state_dict(), path)
 
 
@@ -108,7 +106,7 @@ torch.save(model.state_dict(), path)
 
 
 model_save_name = 'resnet18.pt'
-path = F"/content/gdrive/My Drive/VRResearch/{model_save_name}"
+path = "{model_save_name}"
 model.load_state_dict(torch.load(path))
 
 
