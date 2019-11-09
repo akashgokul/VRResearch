@@ -35,10 +35,6 @@ class MTurkTrain(Dataset):
     label = img_label_pair[1]
     return img,label
 
-params = {'batch_size': 10,
-          'shuffle': True,
-          'num_workers': 0}
-
 train_dataset = MTurkTrain("/global/scratch/oafolabi/data/mturkCSVs/train_data.csv")
 train_size = train_dataset.__len__()
 
@@ -81,6 +77,7 @@ for epoch in range(max_epochs):
     total_loss = 0
   #Training
     for idx, data in enumerate(training_generator):
+        print(data.shape)
         X, y = data[0], data[1]
         model.zero_grad()
         outputs = model(X)
