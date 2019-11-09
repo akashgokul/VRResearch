@@ -3,7 +3,6 @@ import torch
 from PIL import Image
 from torch.utils import data
 import numpy as np
-import ipdb
 from skimage import io, transform
 import matplotlib.pyplot as plt
 from torch.utils.data import Dataset, DataLoader
