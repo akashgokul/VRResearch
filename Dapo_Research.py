@@ -26,7 +26,7 @@ class MTurkTrain(Dataset):
 
   def __len__(self):
     return self.data_frame.shape[0]
-  
+
   def __getitem__(self,idx):
     transform = transforms.Compose([transforms.ToTensor(),transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
     img_label_pair = self.data_frame.iloc[idx]
@@ -41,10 +41,20 @@ params = {'batch_size': 10,
           'num_workers': 0}
 
 train_dataset = MTurkTrain("/global/scratch/oafolabi/data/mturkCSVs/train_data.csv")
-training_generator = data.DataLoader(train_dataset, **params)
+train_size = train_dataset.__len__()
 
-validation_set = MTurkTrain("/global/scratch/oafolabi/data/mturkCSVs/val_data.csv")
-validation_generator = data.DataLoader(validation_set, **params)
+params_t = {'batch_size': 1,
+          'shuffle': True,
+          'num_workers': 0}
+training_generator = data.DataLoader(train_dataset, **params_t)
+
+
+validation_set = MTurkTrain("val_data.csv")
+validation_size = validation_set.__len__()
+params_v = {'batch_size': 1,
+          'shuffle': True,
+          'num_workers': 0}
+validation_generator = data.DataLoader(validation_set, **params_v)
 
 
 # **Training**
@@ -66,12 +76,11 @@ optimizer = optim.Adadelta(model.parameters())
 
 start_ts = time.time()
 model.train()
-batches = params['batch_size']
 
 for epoch in range(max_epochs):
     print("EPOCH: " + str(epoch))
     total_loss = 0
-  #Training 
+  #Training
     for idx, data in enumerate(training_generator):
         X, y = data[0], data[1]
         model.zero_grad()
@@ -84,10 +93,10 @@ for epoch in range(max_epochs):
         current_loss = loss.item()
         total_loss += current_loss
         print("     Loss: {:.4f}".format(total_loss/(idx+1)))
-    
+
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
-  
+
 
 
 # **Save Model**
@@ -137,4 +146,3 @@ with torch.set_grad_enabled(False):
 
 
 print(1 - (val_wrong / 387))
-
