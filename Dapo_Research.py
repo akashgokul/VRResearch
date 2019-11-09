@@ -1,9 +1,9 @@
+import pandas as pd
 import torch
 from PIL import Image
 from torch.utils import data
 import numpy as np
 import ipdb
-import pandas as pd
 from skimage import io, transform
 import matplotlib.pyplot as plt
 from torch.utils.data import Dataset, DataLoader
@@ -31,7 +31,7 @@ class MTurkTrain(Dataset):
     transform = transforms.Compose([transforms.ToTensor(),transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
     img_label_pair = self.data_frame.iloc[idx]
     img_name = img_label_pair[0]
-    img = Image.open(self.img_dir + img_name)
+    img = Image.open(self.img_dir +'/'+ img_name)
     img = transform(img)
     label = img_label_pair[1]
     return img,label
@@ -53,7 +53,7 @@ validation_generator = data.DataLoader(validation_set, **params)
 
 
 
-model = models.resnet18(s)
+model = models.resnet18()
 #From Stanford tutorial
 #use_cuda = torch.cuda.is_available()
 #device = torch.device("cuda:0" if use_cuda else "cpu")
@@ -95,9 +95,9 @@ for epoch in range(max_epochs):
 # In[ ]:
 
 
-model_save_name = 'resnet18.pt'
-path = "{model_save_name}"
-torch.save(model.state_dict(), path)
+#model_save_name = 'resnet18.pt'
+#path = "{model_save_name}"
+#torch.save(model.state_dict(), path)
 
 
 # **Load Pre-saved Model**
@@ -105,9 +105,9 @@ torch.save(model.state_dict(), path)
 # In[ ]:
 
 
-model_save_name = 'resnet18.pt'
-path = "{model_save_name}"
-model.load_state_dict(torch.load(path))
+#model_save_name = 'resnet18.pt'
+#path = "{model_save_name}"
+#model.load_state_dict(torch.load(path))
 
 
 # **Validation**
@@ -130,7 +130,7 @@ with torch.set_grad_enabled(False):
     prediction_lst = predicted_classes.tolist()
     val_wrong += sum([1 if prediction_lst[i] == y[i] else 0 for i in range(len(prediction_lst))])
 
-print(f"Training time: {time.time()-start_ts}s")
+#print(f"Training time: {time.time()-start_ts}s")
 
 
 # In[ ]:
