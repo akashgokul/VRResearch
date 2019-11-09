@@ -77,7 +77,7 @@ for epoch in range(max_epochs):
     total_loss = 0
   #Training
     for idx, data in enumerate(training_generator):
-        print(data.shape)
+        print(data)
         X, y = data[0], data[1]
         model.zero_grad()
         outputs = model(X)
