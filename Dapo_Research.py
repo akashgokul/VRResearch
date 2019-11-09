@@ -27,7 +27,9 @@ class MTurkTrain(Dataset):
     return self.data_frame.shape[0]
 
   def __getitem__(self,idx):
-    transform = transforms.Compose([transforms.ToTensor(),transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+    transform = transforms.Compose([transforms.Resize((224,224)),
+                                    transforms.ToTensor(),
+                                    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
     img_label_pair = self.data_frame.iloc[idx]
     img_name = img_label_pair[0]
     img = Image.open(self.img_dir +'/'+ img_name)
