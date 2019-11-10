@@ -78,22 +78,22 @@ optimizer = optim.Adadelta(model.parameters())
 start_ts = time.time()
 model.train()
 
+loss_epoch_dict = {i:[] for i in range(max_epochs)}
+
 for epoch in range(max_epochs):
     print("EPOCH: " + str(epoch))
     total_loss = 0
   #Training
     for idx, data in enumerate(training_generator):
         X, y = data[0], data[1]
-        print(X.size())
         model.zero_grad()
         outputs = model(X)
-        print("     on to loss")
         loss = loss_function(outputs, y)
         loss.backward()
-        print("     backprop")
         optimizer.step()
         current_loss = loss.item()
         total_loss += current_loss
+        loss_epoch_dict[epoch].append(total_loss/(idx+1))
         print("     Loss: {:.4f}".format(total_loss/(idx+1)))
 
     if torch.cuda.is_available():
