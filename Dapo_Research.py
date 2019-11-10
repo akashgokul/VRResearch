@@ -61,10 +61,14 @@ validation_generator = data.DataLoader(validation_set, **params_v)
 
 
 model = models.resnet18()
-#From Stanford tutorial
-#use_cuda = torch.cuda.is_available()
-#device = torch.device("cuda:0" if use_cuda else "cpu")
 
+
+if torch.cuda.device_count() > 1:
+  print("Let's use", torch.cuda.device_count(), "GPUs!")
+  # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
+  model = nn.DataParallel(model)
+
+model = model.to(device)
 
 max_epochs = 1
 
