@@ -109,9 +109,9 @@ for epoch in range(max_epochs):
 # In[ ]:
 
 
-#model_save_name = 'resnet18.pt'
-#path = "{model_save_name}"
-#torch.save(model.state_dict(), path)
+model_save_name = 'resnet50_88acc.pt'
+path = "{model_save_name}"
+torch.save(model.state_dict(), path)
 
 
 # **Load Pre-saved Model**
