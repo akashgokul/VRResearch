@@ -41,7 +41,7 @@ class MTurkTrain(Dataset):
 train_dataset = MTurkTrain("/global/scratch/oafolabi/data/mturkCSVs/train_data.csv")
 train_size = train_dataset.__len__()
 
-params_t = {'batch_size': 10,
+params_t = {'batch_size': 32,
           'shuffle': True,
           'num_workers': 0}
 training_generator = data.DataLoader(train_dataset, **params_t)
@@ -61,8 +61,7 @@ validation_generator = data.DataLoader(validation_set, **params_v)
 
 
 
-model = models.alexnet()
-
+models.wide_resnet50_2()
 
 if torch.cuda.device_count() > 1:
   print("Let's use", torch.cuda.device_count(), "GPUs!")
@@ -95,7 +94,7 @@ for epoch in range(max_epochs):
         current_loss = loss.item()
         total_loss += current_loss
         loss_epoch_dict[epoch].append(total_loss/(idx+1))
-        if(idx % 100 == 0):
+        if(idx % 20 == 0):
             print("     Loss: {:.4f}".format(total_loss/(idx+1)) + " EPOCH: " + str(epoch))
         else:
             print("     Loss: {:.4f}".format(total_loss/(idx+1)))
