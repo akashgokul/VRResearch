@@ -18,6 +18,7 @@ import torchvision.models as models
 
 use_cuda = torch.cuda.is_available()
 device = torch.device("cuda:0" if use_cuda else "cpu")
+
 class MTurkTrain(Dataset):
   def __init__(self,csv_file):
     self.data_frame = pd.read_csv(csv_file)
@@ -85,7 +86,7 @@ for epoch in range(max_epochs):
     total_loss = 0
   #Training
     for idx, data in enumerate(training_generator):
-        X, y = data[0], data[1]
+        X, y = data[0].to(device), data[1].to(device)
         model.zero_grad()
         outputs = model(X)
         loss = loss_function(outputs, y)
@@ -134,7 +135,7 @@ with torch.set_grad_enabled(False):
   for i, data in enumerate(validation_generator):
     print("Current: " + str(i) + " / " )
     # Transfer to GPU
-    X, y = data[0], data[1]
+    X, y = data[0].to(device), data[1].to(device)
      # Model computations
     outputs = model(X)
     predicted_classes = torch.max(outputs, 1)[1]
