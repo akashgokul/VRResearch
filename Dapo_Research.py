@@ -71,7 +71,7 @@ if torch.cuda.device_count() > 1:
 
 model = model.to(device)
 
-max_epochs = 1
+max_epochs = 10
 
 loss_function = nn.CrossEntropyLoss()
 optimizer = optim.Adadelta(model.parameters())
