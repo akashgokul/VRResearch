@@ -49,7 +49,7 @@ training_generator = data.DataLoader(train_dataset, **params_t)
 
 validation_set = MTurkTrain("val_data.csv")
 validation_size = validation_set.__len__()
-params_v = {'batch_size': 10,
+params_v = {'batch_size': 15,
           'shuffle': True,
           'num_workers': 0}
 validation_generator = data.DataLoader(validation_set, **params_v)
