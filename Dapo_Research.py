@@ -61,7 +61,7 @@ validation_generator = data.DataLoader(validation_set, **params_v)
 
 
 
-models.wide_resnet50_2()
+model = models.wide_resnet50_2()
 
 if torch.cuda.device_count() > 1:
   print("Let's use", torch.cuda.device_count(), "GPUs!")
