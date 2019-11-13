@@ -133,7 +133,6 @@ model.eval()
 with torch.set_grad_enabled(False):
   val_wrong = 0
   for i, data in enumerate(validation_generator):
-    print("Current: " + str(i) + " / " )
     # Transfer to GPU
     X, y = data[0].to(device), data[1].to(device)
      # Model computations
