@@ -96,6 +96,8 @@ for epoch in range(max_epochs):
         total_loss += current_loss
         loss_epoch_dict[epoch].append(total_loss/(idx+1))
         print("     Loss: {:.4f}".format(total_loss/(idx+1)))
+        if(idx % 10 == 0):
+            print("EPOCH: " + str(epoch))
 
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
