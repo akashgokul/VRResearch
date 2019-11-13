@@ -47,7 +47,7 @@ params_t = {'batch_size': 10,
 training_generator = data.DataLoader(train_dataset, **params_t)
 
 
-validation_set = MTurkTrain("val_data.csv")
+validation_set = MTurkTrain("/global/scratch/oafolabi/data/mturkCSVs/val_data.csv")
 validation_size = validation_set.__len__()
 params_v = {'batch_size': 10,
           'shuffle': True,
