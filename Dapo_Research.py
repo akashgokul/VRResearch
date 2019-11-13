@@ -71,7 +71,7 @@ if torch.cuda.device_count() > 1:
 
 model = model.to(device)
 
-max_epochs = 1
+max_epochs = 10
 
 loss_function = nn.CrossEntropyLoss()
 optimizer = optim.Adadelta(model.parameters())
@@ -128,7 +128,8 @@ for epoch in range(max_epochs):
 
 
 # Validation
-
+print("--------------")
+print("Starting Validation Testing:")
 model.eval()
 with torch.set_grad_enabled(False):
   val_wrong = 0
@@ -146,5 +147,5 @@ with torch.set_grad_enabled(False):
 
 # In[ ]:
 
-
+print("Validation Accuracy: ")
 print(1 - (val_wrong / 387))
