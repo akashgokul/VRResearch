@@ -49,7 +49,7 @@ training_generator = data.DataLoader(train_dataset, **params_t)
 
 validation_set = MTurkTrain("/global/scratch/oafolabi/data/mturkCSVs/val_data.csv")
 validation_size = validation_set.__len__()
-params_v = {'batch_size': 10,
+params_v = {'batch_size': 1,
           'shuffle': True,
           'num_workers': 0}
 validation_generator = data.DataLoader(validation_set, **params_v)
@@ -135,7 +135,9 @@ print("Starting Validation Testing:")
 model.eval()
 with torch.set_grad_enabled(False):
   val_wrong = 0
+  total = 0
   for i, data in enumerate(validation_generator):
+    print(i)
     # Transfer to GPU
     X, y = data[0].to(device), data[1].to(device)
      # Model computations
@@ -143,11 +145,11 @@ with torch.set_grad_enabled(False):
     predicted_classes = torch.max(outputs, 1)[1]
     prediction_lst = predicted_classes.tolist()
     val_wrong += sum([1 if prediction_lst[i] != y[i] else 0 for i in range(len(prediction_lst))])
-
+    total = i
 #print(f"Training time: {time.time()-start_ts}s")
 
 
 # In[ ]:
 
 print("Validation Accuracy: ")
-print(1 - (val_wrong / 387))
+print(1 - (val_wrong / total))
