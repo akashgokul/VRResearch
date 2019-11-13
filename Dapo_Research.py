@@ -49,7 +49,7 @@ training_generator = data.DataLoader(train_dataset, **params_t)
 
 validation_set = MTurkTrain("val_data.csv")
 validation_size = validation_set.__len__()
-params_v = {'batch_size': 15,
+params_v = {'batch_size': 10,
           'shuffle': True,
           'num_workers': 0}
 validation_generator = data.DataLoader(validation_set, **params_v)
@@ -61,7 +61,7 @@ validation_generator = data.DataLoader(validation_set, **params_v)
 
 
 
-model = models.resnet18()
+model = models.alexnet()
 
 
 if torch.cuda.device_count() > 1:
