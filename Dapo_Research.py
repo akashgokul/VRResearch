@@ -143,8 +143,7 @@ with torch.set_grad_enabled(False):
     outputs = model(X)
     predicted_classes = torch.max(outputs, 1)[1]
     prediction_lst = predicted_classes.tolist()
-    val_wrong += sum([1 if prediction_lst[i] == y[i] else 0 for i in range(len(prediction_lst))])
-#    print(val_wrong)
+    val_wrong += sum([1 if prediction_lst[i] != y[i] else 0 for i in range(len(prediction_lst))])
 
 #print(f"Training time: {time.time()-start_ts}s")
 
