@@ -61,7 +61,7 @@ validation_generator = data.DataLoader(validation_set, **params_v)
 
 
 
-model = models.resnet50()
+model = models.googlenet()
 
 if torch.cuda.device_count() > 1:
   print("Let's use", torch.cuda.device_count(), "GPUs!")
@@ -70,7 +70,7 @@ if torch.cuda.device_count() > 1:
 
 model = model.to(device)
 
-max_epochs = 15
+max_epochs = 10
 
 loss_function = nn.CrossEntropyLoss()
 optimizer = optim.Adadelta(model.parameters())
@@ -107,12 +107,6 @@ for epoch in range(max_epochs):
 # **Save Model**
 
 # In[ ]:
-
-
-model_save_name = 'resnet50_88acc.pt'
-path = "{model_save_name}"
-torch.save(model.state_dict(), path)
-
 
 # **Load Pre-saved Model**
 
@@ -151,4 +145,9 @@ with torch.set_grad_enabled(False):
 # In[ ]:
 
 print("Validation Accuracy: ")
-print(1 - (val_wrong / total))
+val_acc = 1 - (val_wrong / total)
+print(val_acc)
+if val_acc >= 0.7:
+    model_save_name = 'googlenet.pt'
+    path = "{model_save_name}"
+    torch.save(model.state_dict(), path)
