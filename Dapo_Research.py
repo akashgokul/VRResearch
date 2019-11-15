@@ -149,5 +149,5 @@ val_acc = 1 - (val_wrong / total)
 print(val_acc)
 if val_acc >= 0.7:
     model_save_name = 'inceptionnet.pt'
-    path = {model_save_name}
+    path = model_save_name
     torch.save(model.state_dict(), path)
