@@ -61,7 +61,7 @@ validation_generator = data.DataLoader(validation_set, **params_v)
 
 
 
-model = models.mobilenet_v2()
+model = models.inception_v3()
 
 if torch.cuda.device_count() > 1:
   print("Let's use", torch.cuda.device_count(), "GPUs!")
