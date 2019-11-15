@@ -61,7 +61,7 @@ validation_generator = data.DataLoader(validation_set, **params_v)
 
 
 
-model = models.squeezenet1_0()
+model = models.mobilenet_v2()
 
 if torch.cuda.device_count() > 1:
   print("Let's use", torch.cuda.device_count(), "GPUs!")
@@ -148,6 +148,6 @@ print("Validation Accuracy: ")
 val_acc = 1 - (val_wrong / total)
 print(val_acc)
 if val_acc >= 0.7:
-    model_save_name = 'squeezenet.pt'
+    model_save_name = 'mobilenet.pt'
     path = {model_save_name}
     torch.save(model.state_dict(), path)
