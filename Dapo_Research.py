@@ -41,7 +41,7 @@ class MTurkTrain(Dataset):
 train_dataset = MTurkTrain("/global/scratch/oafolabi/data/mturkCSVs/train_data.csv")
 train_size = train_dataset.__len__()
 
-params_t = {'batch_size': 16,
+params_t = {'batch_size': 32,
           'shuffle': True,
           'num_workers': 0}
 training_generator = data.DataLoader(train_dataset, **params_t)
@@ -70,7 +70,7 @@ if torch.cuda.device_count() > 1:
 
 model = model.to(device)
 
-max_epochs = 15
+max_epochs = 10
 
 loss_function = nn.CrossEntropyLoss()
 optimizer = optim.Adadelta(model.parameters())
