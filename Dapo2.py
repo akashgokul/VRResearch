@@ -68,7 +68,7 @@ if torch.cuda.device_count() > 1:
   # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
   model = nn.DataParallel(model)
 
-model = model.to(device)
+#model = model.to(device)
 #
 # max_epochs = 10
 #
