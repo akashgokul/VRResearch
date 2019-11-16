@@ -61,7 +61,7 @@ validation_generator = data.DataLoader(validation_set, **params_v)
 
 
 
-model = models.segmentation.fcn_resnet101(pretrained=False, progress=True, num_classes=2, aux_loss=None)
+model = models.fcn_resnet101(pretrained=False, progress=True, num_classes=2, aux_loss=None)
 
 if torch.cuda.device_count() > 1:
   print("Let's use", torch.cuda.device_count(), "GPUs!")
