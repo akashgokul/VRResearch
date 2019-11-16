@@ -61,7 +61,7 @@ validation_generator = data.DataLoader(validation_set, **params_v)
 
 
 
-model = models.fcn_resnet101(pretrained=False, progress=True, num_classes=2, aux_loss=None)
+model = models.resnet152()
 
 if torch.cuda.device_count() > 1:
   print("Let's use", torch.cuda.device_count(), "GPUs!")
@@ -70,7 +70,7 @@ if torch.cuda.device_count() > 1:
 
 model = model.to(device)
 
-max_epochs = 12
+max_epochs = 15
 
 loss_function = nn.CrossEntropyLoss()
 optimizer = optim.Adadelta(model.parameters())
