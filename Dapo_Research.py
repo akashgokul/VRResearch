@@ -61,7 +61,7 @@ validation_generator = data.DataLoader(validation_set, **params_v)
 
 
 
-model = models.mnasnet1_0()
+model = models.resnet152()
 
 if torch.cuda.device_count() > 1:
   print("Let's use", torch.cuda.device_count(), "GPUs!")
@@ -144,9 +144,9 @@ with torch.set_grad_enabled(False):
 
 # In[ ]:
 
-print("Validation Accuracy (MNAS 1.0): ")
+print("Validation Accuracy (RESNET 152): ")
 val_acc = 1 - (val_wrong / total)
 print(val_acc)
 if val_acc >= 0.7:
-    PATH = 'mnas.pt'
+    PATH = 'resnet152.pt'
     torch.save(model.state_dict(), PATH)
