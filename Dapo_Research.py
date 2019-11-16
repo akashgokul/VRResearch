@@ -61,7 +61,7 @@ validation_generator = data.DataLoader(validation_set, **params_v)
 
 
 
-model = models.resnet152()
+model = torchvision.models.segmentation.fcn_resnet101(pretrained=False, progress=True, num_classes=2, aux_loss=None)
 
 if torch.cuda.device_count() > 1:
   print("Let's use", torch.cuda.device_count(), "GPUs!")
@@ -148,5 +148,5 @@ print("Validation Accuracy (RESNET 152): ")
 val_acc = 1 - (val_wrong / total)
 print(val_acc)
 if val_acc >= 0.7:
-    PATH = 'resnet152.pt'
+    PATH = 'fcnresnet101.pt'
     torch.save(model.state_dict(), PATH)
