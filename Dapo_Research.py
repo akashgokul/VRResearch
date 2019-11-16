@@ -41,7 +41,7 @@ class MTurkTrain(Dataset):
 train_dataset = MTurkTrain("/global/scratch/oafolabi/data/mturkCSVs/train_data.csv")
 train_size = train_dataset.__len__()
 
-params_t = {'batch_size': 32,
+params_t = {'batch_size': 16,
           'shuffle': True,
           'num_workers': 0}
 training_generator = data.DataLoader(train_dataset, **params_t)
@@ -144,10 +144,9 @@ with torch.set_grad_enabled(False):
 
 # In[ ]:
 
-print("Validation Accuracy: ")
+print("Validation Accuracy (Squeeze 1.0): ")
 val_acc = 1 - (val_wrong / total)
 print(val_acc)
 if val_acc >= 0.7:
-    model_save_name = 'squeeze.pt'
-    path = model_save_name
-    torch.save(model.state_dict(), path)
+    PATH = 'squeeze.pt'
+    torch.save(model.state_dict(), PATH)
