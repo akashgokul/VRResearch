@@ -135,20 +135,17 @@ with torch.set_grad_enabled(False):
     # Transfer to GPU
     X, y = data[0], data[1]
     y = y.item()
-     # Model computations
     outputs = model(X)
     predicted_class = torch.argmax(outputs)
     prediction = predicted_class.item()
     val_wrong += sum([1 if prediction != y else 0])
-    total = i
-print(total)
 #print(f"Training time: {time.time()-start_ts}s")
 
 
 # In[ ]:
 
-print("Validation Accuracy (RESNET 152): ")
-val_acc = 1 - (val_wrong / total)
+print("Validation Accuracy: ")
+val_acc = 1 - (val_wrong / 387)
 print(val_acc)
 # if val_acc >= 0.7:
 #     PATH = 'fcnresnet101.pt'

@@ -13,9 +13,6 @@ import torchvision.models as models
 
 # **Load Data**
 
-# In[ ]:
-#
-#
 use_cuda = torch.cuda.is_available()
 device = torch.device("cuda:0" if use_cuda else "cpu")
 
@@ -38,22 +35,8 @@ class MTurkTrain(Dataset):
     label = img_label_pair[1]
     return img,label
 
-train_dataset = MTurkTrain("/global/scratch/oafolabi/data/mturkCSVs/train_data.csv")
-train_size = train_dataset.__len__()
 
-params_t = {'batch_size': 1,
-          'shuffle': True,
-          'num_workers': 0}
-training_generator = data.DataLoader(train_dataset, **params_t)
-
-
-
-# **Training**
-
-# In[ ]:
-
-
-
+## MODEL NAME, LOAD!!! ##
 model = models.resnet152()
 
 model.load_state_dict(torch.load("resnet152.pt",map_location=torch.device('cpu')))
@@ -86,19 +69,17 @@ with torch.set_grad_enabled(False):
     # Transfer to GPU
     X, y = data[0].to(device), data[1].to(device)
     y = y.item()
-     # Model computations
     outputs = model(X)
     predicted_class = torch.argmax(outputs)
     prediction = predicted_class.item()
     val_wrong += sum([1 if prediction != y else 0])
-    total = i
-print(total)
+
 
 
 # In[ ]:
 
-print("Validation Accuracy (RESNET 152): ")
-val_acc = 1 - (val_wrong / total)
+print("Validation Accuracy: ")
+val_acc = 1 - (val_wrong / 387)
 print(val_acc)
 # if val_acc >= 0.7:
 #     PATH = 'fcnresnet101.pt'
