@@ -135,11 +135,11 @@ with torch.set_grad_enabled(False):
   for i, data in enumerate(validation_generator):
     # Transfer to GPU
     X, y = data[0].to(device), data[1].to(device)
-    print(y[0])
      # Model computations
     outputs = model(X)
     predicted_class = torch.argmax(outputs)
-    val_wrong += sum([1 if predicted_class != y else 0 ])
+    print(predicted_class)
+    #val_wrong += sum([0 if torch.equal(predicted_class)
     total = i
 #print(f"Training time: {time.time()-start_ts}s")
 
