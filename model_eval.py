@@ -16,8 +16,8 @@ import torchvision.models as models
 # In[ ]:
 #
 #
-# use_cuda = torch.cuda.is_available()
-# device = torch.device("cuda:0" if use_cuda else "cpu")
+use_cuda = torch.cuda.is_available()
+device = torch.device("cuda:0" if use_cuda else "cpu")
 
 class MTurkTrain(Dataset):
   def __init__(self,csv_file):
@@ -56,69 +56,20 @@ training_generator = data.DataLoader(train_dataset, **params_t)
 
 model = models.resnet152()
 
-# if torch.cuda.device_count() > 1:
-#   print("Let's use", torch.cuda.device_count(), "GPUs!")
-#   # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
-#   model = nn.DataParallel(model)
-#
-# model = model.to(device)
-
-# max_epochs = 17
-#
-# loss_function = nn.CrossEntropyLoss()
-# optimizer = optim.Adadelta(model.parameters())
-#
-# start_ts = time.time()
-# model.train()
-#
-# loss_epoch_dict = {i:[] for i in range(max_epochs)}
-#
-# for epoch in range(max_epochs):
-#     print("EPOCH: " + str(epoch))
-#     total_loss = 0
-#   #Training
-#     for idx, data in enumerate(training_generator):
-#         X, y = data[0].to(device), data[1].to(device)
-#         print(y)
-#         model.zero_grad()
-#         outputs = model(X)
-#         print(outputs)
-#         loss = loss_function(outputs, y)
-#         loss.backward()
-#         optimizer.step()
-#         current_loss = loss.item()
-#         total_loss += current_loss
-#         loss_epoch_dict[epoch].append(total_loss/(idx+1))
-#         if(idx % 20 == 0):
-#             print("     Loss: {:.4f}".format(total_loss/(idx+1)) + " EPOCH: " + str(epoch))
-#         else:
-#             print("     Loss: {:.4f}".format(total_loss/(idx+1)))
-#
-#     if torch.cuda.is_available():
-#         torch.cuda.empty_cache()
-#
-#
-#
-# # **Save Model**
-#
-# # In[ ]:
-#
-# # **Load Pre-saved Model**
-#
-# # In[ ]:
-#
-#
-# #model_save_name = 'resnet18.pt'
-# #path = "{model_save_name}"
 model.load_state_dict(torch.load("resnet152.pt",map_location=torch.device('cpu')))
-#
-#
+
+ if torch.cuda.device_count() > 1:
+    dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
+    model = nn.DataParallel(model)
+model = model.to(device)
+
 # # **Validation**
 #
 # # In[ ]:
 
 
 # Validation
+
 validation_set = MTurkTrain("/global/scratch/oafolabi/data/mturkCSVs/val_data.csv")
 validation_size = validation_set.__len__()
 params_v = {'batch_size': 1,
@@ -134,7 +85,7 @@ with torch.set_grad_enabled(False):
   total = 0
   for i, data in enumerate(validation_generator):
     # Transfer to GPU
-    X, y = data[0], data[1]
+    X, y = data[0].to(device), data[1].to(device)
     y = y.item()
      # Model computations
     outputs = model(X)
@@ -143,7 +94,6 @@ with torch.set_grad_enabled(False):
     val_wrong += sum([1 if prediction != y else 0])
     total = i
 print(total)
-#print(f"Training time: {time.time()-start_ts}s")
 
 
 # In[ ]:
