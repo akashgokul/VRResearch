@@ -136,12 +136,13 @@ with torch.set_grad_enabled(False):
     # Transfer to GPU
     X, y = data[0], data[1]
     y = y.item()
-    print(y)
      # Model computations
     outputs = model(X)
     predicted_class = torch.argmax(outputs)
-    print(predicted_class.item())
+    prediction = predicted_class.item()
+    val_wrong += [1 if prediction != y else 0]
     total = i
+print(total)
 #print(f"Training time: {time.time()-start_ts}s")
 
 
