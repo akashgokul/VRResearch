@@ -135,7 +135,7 @@ with torch.set_grad_enabled(False):
   for i, data in enumerate(validation_generator):
     # Transfer to GPU
     X, y = data[0].to(device), data[1].to(device)
-    print(y)
+    print(y[0])
      # Model computations
     outputs = model(X)
     predicted_class = torch.argmax(outputs)
