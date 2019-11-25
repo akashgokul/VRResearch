@@ -63,12 +63,12 @@ validation_generator = data.DataLoader(validation_set, **params_v)
 
 model = models.resnet152()
 
-if torch.cuda.device_count() > 1:
-  print("Let's use", torch.cuda.device_count(), "GPUs!")
-  # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
-  model = nn.DataParallel(model)
-
-model = model.to(device)
+# if torch.cuda.device_count() > 1:
+#   print("Let's use", torch.cuda.device_count(), "GPUs!")
+#   # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
+#   model = nn.DataParallel(model)
+#
+# model = model.to(device)
 
 # max_epochs = 17
 #
@@ -118,6 +118,13 @@ model = model.to(device)
 # #model_save_name = 'resnet18.pt'
 # #path = "{model_save_name}"
 model.load_state_dict(torch.load("resnet152.pt"))
+
+if torch.cuda.device_count() > 1:
+  print("Let's use", torch.cuda.device_count(), "GPUs!")
+  # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
+  model = nn.DataParallel(model)
+
+model = model.to(device)
 #
 #
 # # **Validation**
