@@ -118,7 +118,7 @@ model = models.resnet152()
 # #model_save_name = 'resnet18.pt'
 # #path = "{model_save_name}"
 model.load_state_dict(torch.load("resnet152.pt"))
-# 
+#
 # use_cuda = torch.cuda.is_available()
 # device = torch.device("cuda:0" if use_cuda else "cpu")
 #
@@ -144,7 +144,7 @@ with torch.set_grad_enabled(False):
   total = 0
   for i, data in enumerate(validation_generator):
     # Transfer to GPU
-    X, y = data[0].to(device), data[1].to(device)
+    X, y = data[0], data[1]
      # Model computations
     outputs = model(X)
     predicted_class = torch.argmax(outputs)
