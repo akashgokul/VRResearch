@@ -146,9 +146,9 @@ with torch.set_grad_enabled(False):
 
 # In[ ]:
 
-# print("Validation Accuracy (RESNET 152): ")
-# val_acc = 1 - (val_wrong / total)
-# print(val_acc)
+print("Validation Accuracy (RESNET 152): ")
+val_acc = 1 - (val_wrong / total)
+print(val_acc)
 # if val_acc >= 0.7:
 #     PATH = 'fcnresnet101.pt'
 #     torch.save(model.state_dict(), PATH)
