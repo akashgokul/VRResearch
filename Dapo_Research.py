@@ -15,9 +15,8 @@ import torchvision.models as models
 
 # In[ ]:
 #
-#
-# use_cuda = torch.cuda.is_available()
-# device = torch.device("cuda:0" if use_cuda else "cpu")
+use_cuda = torch.cuda.is_available()
+device = torch.device("cuda:0" if use_cuda else "cpu")
 
 class MTurkTrain(Dataset):
   def __init__(self,csv_file):
@@ -56,48 +55,48 @@ training_generator = data.DataLoader(train_dataset, **params_t)
 
 model = models.resnet152()
 
-# if torch.cuda.device_count() > 1:
-#   print("Let's use", torch.cuda.device_count(), "GPUs!")
-#   model = nn.DataParallel(model)
-#
-# model = model.to(device)
+if torch.cuda.device_count() > 1:
+  print("Let's use", torch.cuda.device_count(), "GPUs!")
+  model = nn.DataParallel(model)
 
-# max_epochs = 17
-#
-# loss_function = nn.CrossEntropyLoss()
-# optimizer = optim.Adadelta(model.parameters())
-#
-# start_ts = time.time()
-# model.train()
-#
-# loss_epoch_dict = {i:[] for i in range(max_epochs)}
-#
-# for epoch in range(max_epochs):
-#     print("EPOCH: " + str(epoch))
-#     total_loss = 0
-#   #Training
-#     for idx, data in enumerate(training_generator):
-#         X, y = data[0].to(device), data[1].to(device)
-#         print(y)
-#         model.zero_grad()
-#         outputs = model(X)
-#         print(outputs)
-#         loss = loss_function(outputs, y)
-#         loss.backward()
-#         optimizer.step()
-#         current_loss = loss.item()
-#         total_loss += current_loss
-#         loss_epoch_dict[epoch].append(total_loss/(idx+1))
-#         if(idx % 20 == 0):
-#             print("     Loss: {:.4f}".format(total_loss/(idx+1)) + " EPOCH: " + str(epoch))
-#         else:
-#             print("     Loss: {:.4f}".format(total_loss/(idx+1)))
-#
-#     if torch.cuda.is_available():
-#         torch.cuda.empty_cache()
-#
-#
-#
+model = model.to(device)
+
+max_epochs = 20
+
+loss_function = nn.CrossEntropyLoss()
+optimizer = optim.Adadelta(model.parameters())
+
+start_ts = time.time()
+model.train()
+
+loss_epoch_dict = {i:[] for i in range(max_epochs)}
+
+for epoch in range(max_epochs):
+    print("EPOCH: " + str(epoch))
+    total_loss = 0
+  #Training
+    for idx, data in enumerate(training_generator):
+        X, y = data[0].to(device), data[1].to(device)
+        print(y)
+        model.zero_grad()
+        outputs = model(X)
+        print(outputs)
+        loss = loss_function(outputs, y)
+        loss.backward()
+        optimizer.step()
+        current_loss = loss.item()
+        total_loss += current_loss
+        loss_epoch_dict[epoch].append(total_loss/(idx+1))
+        if(idx % 20 == 0):
+            print("     Loss: {:.4f}".format(total_loss/(idx+1)) + " EPOCH: " + str(epoch))
+        else:
+            print("     Loss: {:.4f}".format(total_loss/(idx+1)))
+
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+
+
+
 # # **Save Model**
 #
 # # In[ ]:
@@ -109,7 +108,7 @@ model = models.resnet152()
 #
 # #model_save_name = 'resnet18.pt'
 # #path = "{model_save_name}"
-model.load_state_dict(torch.load("resnet152.pt",map_location=torch.device('cpu')))
+# model.load_state_dict(torch.load("resnet152.pt",map_location=torch.device('cpu')))
 #
 #
 # # **Validation**
@@ -147,6 +146,6 @@ with torch.set_grad_enabled(False):
 print("Validation Accuracy: ")
 val_acc = 1 - (val_wrong / 387)
 print(val_acc)
-# if val_acc >= 0.7:
-#     PATH = 'fcnresnet101.pt'
-#     torch.save(model.state_dict(), PATH)
+if val_acc >= 0.7:
+    PATH = "resnet152_" + str(val_acc) + ".pt"
+    torch.save(model.state_dict(), PATH)
