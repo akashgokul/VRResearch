@@ -140,7 +140,7 @@ with torch.set_grad_enabled(False):
      # Model computations
     outputs = model(X)
     predicted_class = torch.argmax(outputs)
-    val_wrong += sum([0 if torch.equal(predicted_class,y) else 1])
+    print(predicted_class.item())
     total = i
 #print(f"Training time: {time.time()-start_ts}s")
 
