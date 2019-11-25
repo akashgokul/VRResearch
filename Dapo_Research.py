@@ -137,6 +137,8 @@ with torch.set_grad_enabled(False):
     X, y = data[0].to(device), data[1].to(device)
      # Model computations
     outputs = model(X)
+    print(outputs)
+    break
     predicted_classes = torch.max(outputs, 1)[1]
     prediction_lst = predicted_classes.tolist()
     val_wrong += sum([1 if prediction_lst[i] != y[i] else 0 for i in range(len(prediction_lst))])
