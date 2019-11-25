@@ -117,7 +117,7 @@ model = model.to(device)
 #
 # #model_save_name = 'resnet18.pt'
 # #path = "{model_save_name}"
-# #model.load_state_dict(torch.load(path))
+model.load_state_dict(torch.load("resnet152.pt"))
 #
 #
 # # **Validation**
@@ -138,8 +138,7 @@ with torch.set_grad_enabled(False):
      # Model computations
     outputs = model(X)
     predicted_class = torch.argmax(outputs)
-    print(predicted_class)
-    #val_wrong += sum([0 if torch.equal(predicted_class)
+    val_wrong += sum([0 if torch.equal(predicted_class) else 1])
     total = i
 #print(f"Training time: {time.time()-start_ts}s")
 
