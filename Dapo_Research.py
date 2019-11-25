@@ -16,8 +16,8 @@ import torchvision.models as models
 # In[ ]:
 
 
-use_cuda = torch.cuda.is_available()
-device = torch.device("cuda:0" if use_cuda else "cpu")
+# use_cuda = torch.cuda.is_available()
+# device = torch.device("cuda:0" if use_cuda else "cpu")
 
 class MTurkTrain(Dataset):
   def __init__(self,csv_file):
@@ -119,6 +119,8 @@ model = models.resnet152()
 # #path = "{model_save_name}"
 model.load_state_dict(torch.load("resnet152.pt"))
 
+use_cuda = torch.cuda.is_available()
+device = torch.device("cuda:0" if use_cuda else "cpu")
 if torch.cuda.device_count() > 1:
   print("Let's use", torch.cuda.device_count(), "GPUs!")
   # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
