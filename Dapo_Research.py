@@ -79,7 +79,7 @@ for epoch in range(max_epochs):
         X, y = data[0].to(device), data[1].to(device)
         model.zero_grad()
         outputs = model(X)
-        loss = loss_function(outputs, y)
+        loss = loss_function(outputs.logits, y)
         loss.backward()
         optimizer.step()
         current_loss = loss.item()
@@ -130,7 +130,7 @@ with torch.set_grad_enabled(False):
   total = 0
   for i, data in enumerate(validation_generator):
     # Transfer to GPU
-    X, y = data[0], data[1]
+    X, y = data[0].to(device), data[1].to(device)
     y = y.item()
     outputs = model(X)
     predicted_class = torch.argmax(outputs)
