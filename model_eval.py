@@ -39,7 +39,7 @@ class MTurkTrain(Dataset):
 ## MODEL NAME, LOAD!!! ##
 model = models.resnet152()
 
-model.load_state_dict(torch.load("resnet152.pt",map_location=torch.device('cpu')))
+model.load_state_dict(torch.load("fcnresnet152.pt",map_location=torch.device('cpu')))
 
 if torch.cuda.device_count() > 1:
     model = nn.DataParallel(model)
