@@ -133,7 +133,7 @@ with torch.set_grad_enabled(False):
     X, y = data[0].to(device), data[1].to(device)
     y = y.item()
     outputs = model(X)
-    predicted_class = torch.argmax(outputs.logits)
+    predicted_class = torch.argmax(outputs.logit)
     prediction = predicted_class.item()
     val_wrong += sum([1 if prediction != y else 0])
 #print(f"Training time: {time.time()-start_ts}s")
@@ -145,5 +145,5 @@ print("Validation Accuracy: ")
 val_acc = 1 - (val_wrong / 387)
 print(val_acc)
 if val_acc >= 0.7:
-    PATH = "resnet152_" + str(val_acc) + ".pt"
+    PATH = "googlenet_" + str(val_acc) + ".pt"
     torch.save(model.state_dict(), PATH)
