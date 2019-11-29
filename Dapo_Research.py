@@ -45,6 +45,12 @@ params_t = {'batch_size': 16,
           'num_workers': 0}
 training_generator = data.DataLoader(train_dataset, **params_t)
 
+validation_set = MTurkTrain("/global/scratch/oafolabi/data/mturkCSVs/val_data.csv")
+params_v = {'batch_size': 1,
+          'shuffle': True,
+          'num_workers': 0}
+validation_generator = data.DataLoader(validation_set, **params_v)
+
 
 
 # **Training**
@@ -61,7 +67,7 @@ if torch.cuda.device_count() > 1:
 
 model = model.to(device)
 
-max_epochs = 5
+max_epochs = 1
 
 loss_function = nn.CrossEntropyLoss()
 optimizer = optim.Adadelta(model.parameters())
@@ -115,13 +121,6 @@ for epoch in range(max_epochs):
 
 
 # Validation
-validation_set = MTurkTrain("/global/scratch/oafolabi/data/mturkCSVs/val_data.csv")
-validation_size = validation_set.__len__()
-params_v = {'batch_size': 1,
-          'shuffle': True,
-          'num_workers': 0}
-validation_generator = data.DataLoader(validation_set, **params_v)
-
 print("--------------")
 print("Starting Validation Testing:")
 model.eval()
