@@ -131,7 +131,7 @@ with torch.set_grad_enabled(False):
     X, y = data[0].to(device), data[1].to(device)
     y = y.item()
     outputs = model(X)
-    predicted_class = torch.argmax(outputs.logit)
+    predicted_class = torch.argmax(outputs)
     prediction = predicted_class.item()
     val_wrong += sum([1 if prediction != y else 0])
 #print(f"Training time: {time.time()-start_ts}s")
