@@ -39,6 +39,8 @@ class MTurkTrain(Dataset):
 
 train_dataset = MTurkTrain("/global/scratch/oafolabi/data/mturkCSVs/train_data.csv")
 train_size = train_dataset.__len__()
+print(train_size)
+print("----")
 
 params_t = {'batch_size': 16,
           'shuffle': True,
@@ -50,98 +52,101 @@ params_v = {'batch_size': 1,
           'shuffle': True,
           'num_workers': 0}
 validation_generator = data.DataLoader(validation_set, **params_v)
-
+print(validation_set.__len__())
+print("---")
+fulldata_set = MTurkTrain("fulldataset.csv")
+print(fulldata_set.__len__())
 
 
 # **Training**
 
 # In[ ]:
 
-
-
-model = models.googlenet()
-
-if torch.cuda.device_count() > 1:
-  print("Let's use", torch.cuda.device_count(), "GPUs!")
-  model = nn.DataParallel(model)
-
-model = model.to(device)
-
-max_epochs = 20
-
-loss_function = nn.CrossEntropyLoss()
-optimizer = optim.Adadelta(model.parameters())
-
-model.train()
-
-loss_epoch_dict = {i:[] for i in range(max_epochs)}
-
-for epoch in range(max_epochs):
-    print("EPOCH: " + str(epoch))
-    total_loss = 0
-  #Training
-    for idx, data in enumerate(training_generator):
-        X, y = data[0].to(device), data[1].to(device)
-        model.zero_grad()
-        outputs = model(X)
-        loss = loss_function(outputs.logits, y)
-        loss.backward()
-        optimizer.step()
-        current_loss = loss.item()
-        total_loss += current_loss
-        loss_epoch_dict[epoch].append(total_loss/(idx+1))
-        if(idx % 20 == 0):
-            print("     Loss: {:.4f}".format(total_loss/(idx+1)) + " EPOCH: " + str(epoch))
-        else:
-            print("     Loss: {:.4f}".format(total_loss/(idx+1)))
-
-    if torch.cuda.is_available():
-        torch.cuda.empty_cache()
-
-
-
-# # **Save Model**
+#
+#
+# model = models.googlenet()
+#
+# if torch.cuda.device_count() > 1:
+#   print("Let's use", torch.cuda.device_count(), "GPUs!")
+#   model = nn.DataParallel(model)
+#
+# model = model.to(device)
+#
+# max_epochs = 20
+#
+# loss_function = nn.CrossEntropyLoss()
+# optimizer = optim.Adadelta(model.parameters())
+#
+# model.train()
+#
+# loss_epoch_dict = {i:[] for i in range(max_epochs)}
+#
+# for epoch in range(max_epochs):
+#     print("EPOCH: " + str(epoch))
+#     total_loss = 0
+#   #Training
+#     for idx, data in enumerate(training_generator):
+#         X, y = data[0].to(device), data[1].to(device)
+#         model.zero_grad()
+#         outputs = model(X)
+#         loss = loss_function(outputs.logits, y)
+#         loss.backward()
+#         optimizer.step()
+#         current_loss = loss.item()
+#         total_loss += current_loss
+#         loss_epoch_dict[epoch].append(total_loss/(idx+1))
+#         if(idx % 20 == 0):
+#             print("     Loss: {:.4f}".format(total_loss/(idx+1)) + " EPOCH: " + str(epoch))
+#         else:
+#             print("     Loss: {:.4f}".format(total_loss/(idx+1)))
+#
+#     if torch.cuda.is_available():
+#         torch.cuda.empty_cache()
+#
+#
+#
+# # # **Save Model**
+# #
+# # # In[ ]:
+# #
+# # # **Load Pre-saved Model**
+# #
+# # # In[ ]:
+# #
+# #
+# # #model_save_name = 'resnet18.pt'
+# # #path = "{model_save_name}"
+# # model.load_state_dict(torch.load("resnet152.pt",map_location=torch.device('cpu')))
+# #
+# #
+# # # **Validation**
+# #
+# # # In[ ]:
+#
+#
+# # Validation
+# print("--------------")
+# print("Starting Validation Testing:")
+# model.eval()
+# with torch.set_grad_enabled(False):
+#   val_wrong = 0
+#   total = 0
+#   for i, data in enumerate(validation_generator):
+#     # Transfer to GPU
+#     X, y = data[0].to(device), data[1].to(device)
+#     y = y.item()
+#     outputs = model(X)
+#     predicted_class = torch.argmax(outputs)
+#     prediction = predicted_class.item()
+#     val_wrong += sum([1 if prediction != y else 0])
+# #print(f"Training time: {time.time()-start_ts}s")
+#
 #
 # # In[ ]:
 #
-# # **Load Pre-saved Model**
-#
-# # In[ ]:
-#
-#
-# #model_save_name = 'resnet18.pt'
-# #path = "{model_save_name}"
-# model.load_state_dict(torch.load("resnet152.pt",map_location=torch.device('cpu')))
-#
-#
-# # **Validation**
-#
-# # In[ ]:
-
-
-# Validation
-print("--------------")
-print("Starting Validation Testing:")
-model.eval()
-with torch.set_grad_enabled(False):
-  val_wrong = 0
-  total = 0
-  for i, data in enumerate(validation_generator):
-    # Transfer to GPU
-    X, y = data[0].to(device), data[1].to(device)
-    y = y.item()
-    outputs = model(X)
-    predicted_class = torch.argmax(outputs)
-    prediction = predicted_class.item()
-    val_wrong += sum([1 if prediction != y else 0])
-#print(f"Training time: {time.time()-start_ts}s")
-
-
-# In[ ]:
-
-print("Validation Accuracy: ")
-val_acc = 1 - (val_wrong / 387)
-print(val_acc)
-if val_acc >= 0.7:
-    PATH = "googlenet_" + str(val_acc) + ".pt"
-    torch.save(model.state_dict(), PATH)
+# print("Validation Accuracy: ")
+# val_acc = 1 - (val_wrong / 387)
+# print(val_acc)
+# if val_acc >= 0.7:
+#     PATH = "googlenet_" + str(val_acc) + ".pt"
+#     torch.save(model.state_dict(), PATH)
