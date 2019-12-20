@@ -55,7 +55,7 @@ validation_generator = data.DataLoader(validation_set, **params_v)
 print(validation_set.__len__())
 print("---")
 fulldata_set = MTurkTrain("fulldataset.csv")
-print(fulldata_set.__len__())
+print(fulldata_set.data_frame)
 
 
 # **Training**
