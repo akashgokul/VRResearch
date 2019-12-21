@@ -39,8 +39,7 @@ class MTurkTrain(Dataset):
 
 train_dataset = MTurkTrain("/global/scratch/oafolabi/data/mturkCSVs/train_data.csv")
 train_size = train_dataset.__len__()
-print(train_size)
-print("----")
+
 
 params_t = {'batch_size': 16,
           'shuffle': True,
@@ -52,10 +51,8 @@ params_v = {'batch_size': 1,
           'shuffle': True,
           'num_workers': 0}
 validation_generator = data.DataLoader(validation_set, **params_v)
-print(validation_set.__len__())
-print("---")
+
 fulldata_set = MTurkTrain("fulldataset.csv")
-print(fulldata_set.data_frame)
 
 
 # **Training**
