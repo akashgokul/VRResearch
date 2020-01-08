@@ -84,3 +84,4 @@ print(val_acc)
 # if val_acc >= 0.7:
 #     PATH = 'fcnresnet101.pt'
 #     torch.save(model.state_dict(), PATH)
+validation_set = MTurkTrain("full_gb.csv")
