@@ -10,7 +10,7 @@ from torchvision import transforms, utils
 import time
 from torch import nn, optim
 import torchvision.models as models
-import googlenet
+from googlenet import *
 
 # **Load Data**
 
