@@ -37,7 +37,7 @@ class MTurkTrain(Dataset):
 
 
 ## MODEL NAME, LOAD!!! ##
-model = models.googlenet()
+model = torch.hub.load('pytorch/vision:v0.4.2', 'googlenet', pretrained=False)
 
 model.load_state_dict(torch.load("googlenet_0.8552971576227391.pt",map_location=torch.device('cpu')))
 
