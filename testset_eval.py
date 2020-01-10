@@ -30,7 +30,6 @@ class MTurkTrain(Dataset):
                                     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
     img_label_pair = self.data_frame.iloc[idx]
     img_name = img_label_pair[0]
-    print(img_name)
     img = Image.open(self.img_dir +'/'+ img_name)
     img = transform(img)
     label = img_label_pair[1]
@@ -60,8 +59,6 @@ model.eval()
 with torch.set_grad_enabled(False):
   val_wrong = 0
   for i, data in enumerate(test_generator):
-    print(i)
-    print(data)
     # Transfer to GPU
     X, y = data[0].to(device), data[1].to(device)
     y = y.item()
