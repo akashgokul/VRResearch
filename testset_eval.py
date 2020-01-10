@@ -60,6 +60,7 @@ with torch.set_grad_enabled(False):
   val_wrong = 0
   for i, data in enumerate(test_generator):
     # Transfer to GPU
+    print(str(i) + " / " + str(testset_size))
     X, y = data[0].to(device), data[1].to(device)
     y = y.item()
     outputs = model(X)
