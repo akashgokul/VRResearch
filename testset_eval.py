@@ -45,27 +45,21 @@ if torch.cuda.device_count() > 1:
     model = nn.DataParallel(model)
 model = model.to(device)
 
-# # **Validation**
-#
-# # In[ ]:
-
-
-# Validation
-
-validation_set = MTurkTrain("/global/scratch/oafolabi/data/mturkCSVs/val_data.csv")
-validation_size = validation_set.__len__()
-params_v = {'batch_size': 1,
+test_set = MTurkTrain("testset_gb.csv")
+testset_size = test_set.__len__()
+params_t = {'batch_size': 1,
           'shuffle': True,
           'num_workers': 0}
-validation_generator = data.DataLoader(validation_set, **params_v)
+test_generator = data.DataLoader(test_set, **params_t)
+
 
 print("--------------")
-print("Starting Validation Testing:")
+print("Starting Testing:")
 model.eval()
 with torch.set_grad_enabled(False):
   val_wrong = 0
   total = 0
-  for i, data in enumerate(validation_generator):
+  for i, data in enumerate(test_generator):
     # Transfer to GPU
     X, y = data[0].to(device), data[1].to(device)
     y = y.item()
@@ -78,9 +72,9 @@ with torch.set_grad_enabled(False):
 
 # In[ ]:
 
-print("Validation Accuracy: ")
-val_acc = 1 - (val_wrong / 387)
-print(val_acc)
+print("Test Accuracy: ")
+test_acc = 1 - (val_wrong / testset_size)
+print(test_acc)
 # if val_acc >= 0.7:
 #     PATH = 'fcnresnet101.pt'
 #     torch.save(model.state_dict(), PATH)
