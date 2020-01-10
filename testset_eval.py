@@ -10,6 +10,7 @@ from torchvision import transforms, utils
 import time
 from torch import nn, optim
 import torchvision.models as models
+import googlenet
 
 # **Load Data**
 
@@ -37,7 +38,7 @@ class MTurkTrain(Dataset):
 
 
 ## MODEL NAME, LOAD!!! ##
-model = models.googlenet()
+model = GoogLeNet()
 
 model.load_state_dict(torch.load("googlenet_0.8552971576227391.pt",map_location=torch.device('cpu')))
 
